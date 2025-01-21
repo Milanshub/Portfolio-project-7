@@ -102,7 +102,8 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <motion.a
-              href="#contact"
+              href="/public/assets/resume.pdf"
+              download="MyResume.pdf" 
               className="px-8 py-3 rounded-full bg-secondary text-secondary-foreground font-medium"
               whileHover={{ 
                 scale: 1.05,
@@ -110,7 +111,7 @@ export function HeroSection() {
               }}
               whileTap={{ scale: 0.95 }}
             >
-              Get in Touch
+              Resume
             </motion.a>
           </motion.div>
          
