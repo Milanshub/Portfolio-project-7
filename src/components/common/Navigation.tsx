@@ -23,7 +23,7 @@ export function Navigation() {
           <NavigationMenuItem>
             <NavigationMenuLink 
               className="text-muted-foreground hover:text-foreground transition-colors"
-              href="#skils"
+              href="#skills"
             >
               Skills
             </NavigationMenuLink>
