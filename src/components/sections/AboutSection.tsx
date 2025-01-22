@@ -24,7 +24,7 @@ export function AboutSection() {
       />
       <motion.section 
         id="about" 
-        className="py-24 bg-muted/50 relative overflow-hidden"
+        className="py-20 bg-muted/50 relative overflow-hidden"
         style={{ opacity }}
       >
         {/* Animated background gradient */}

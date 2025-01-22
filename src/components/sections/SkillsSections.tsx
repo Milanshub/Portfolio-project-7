@@ -1,13 +1,51 @@
 import { motion, useScroll, useTransform } from "framer-motion"
 import { GitHubContributions } from "@/components/common/GitHubContributions"
+import { 
+  Blocks, 
+  FileCode2, 
+  Server, 
+  Layers, 
+  Palette, 
+  Database 
+} from "lucide-react"
 
 const skills = [
-  { name: "React", level: 90, color: "#61DAFB", icon: "⚛️" },
-  { name: "TypeScript", level: 85, color: "#3178C6", icon: "📘" },
-  { name: "Node.js", level: 80, color: "#339933", icon: "🟢" },
-  { name: "Next.js", level: 85, color: "#000000", icon: "▲" },
-  { name: "Tailwind CSS", level: 90, color: "#38B2AC", icon: "🎨" },
-  { name: "PostgreSQL", level: 75, color: "#336791", icon: "🐘" },
+  { 
+    name: "React", 
+    level: 90, 
+    color: "#61DAFB",
+    icon: <Blocks className="w-6 h-6" strokeWidth={1.5} /> 
+  },
+  { 
+    name: "TypeScript", 
+    level: 85, 
+    color: "#3178C6",
+    icon: <FileCode2 className="w-6 h-6" strokeWidth={1.5} /> 
+  },
+  { 
+    name: "Node.js", 
+    level: 80, 
+    color: "#339933",
+    icon: <Server className="w-6 h-6" strokeWidth={1.5} /> 
+  },
+  { 
+    name: "Next.js", 
+    level: 85, 
+    color: "#000000",
+    icon: <Layers className="w-6 h-6" strokeWidth={1.5} /> 
+  },
+  { 
+    name: "Tailwind CSS", 
+    level: 90, 
+    color: "#38B2AC",
+    icon: <Palette className="w-6 h-6" strokeWidth={1.5} /> 
+  },
+  { 
+    name: "PostgreSQL", 
+    level: 75, 
+    color: "#336791",
+    icon: <Database className="w-6 h-6" strokeWidth={1.5} /> 
+  },
 ]
 
 export function SkillsSection() {
@@ -25,9 +63,23 @@ export function SkillsSection() {
       />
       <motion.section 
         id="skills" 
-        className="py-24 bg-muted/50 relative overflow-hidden"
+        className="py-20 bg-muted/50 relative overflow-hidden"
         style={{ opacity }}
       >
+        {/* Animated background gradient */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+
         <div className="container mx-auto px-6 relative">
           <motion.h2 
             className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary text-center mb-16"
@@ -58,20 +110,13 @@ export function SkillsSection() {
                     className="bg-background/50 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow"
                   >
                     <div className="flex items-center gap-3 mb-4">
-                      <motion.span
-                        className="text-3xl"
-                        animate={{
-                          y: [0, -10, 0],
-                          rotate: [0, 10, -10, 0],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          delay: index * 0.2,
-                        }}
+                      <motion.div
+                        className="text-foreground"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
                       >
                         {skill.icon}
-                      </motion.span>
+                      </motion.div>
                       <span className="text-lg font-medium">{skill.name}</span>
                       <span className="ml-auto text-lg">{skill.level}%</span>
                     </div>

@@ -40,7 +40,7 @@ export function ProjectsSection() {
       />
       <motion.section 
         id="projects" 
-        className="min-h-screen py-24 bg-muted/50 relative overflow-hidden flex items-center"
+        className="min-h-screen py-20 bg-muted/50 relative overflow-hidden flex items-center"
         style={{ opacity }}
       >
         {/* Animated background gradient */}

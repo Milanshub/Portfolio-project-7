@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react"
-
-interface ContributionsData {
-  totalContributions: number
-  weeks: {
-    contributionDays: {
-      contributionCount: number
-      date: string
-    }[]
-  }[]
-}
+import { ContributionsData } from "@/types/contributions"
 
 export function GitHubContributions() {
   const [contributions, setContributions] = useState<ContributionsData | null>(null)
 
   useEffect(() => {
     const fetchContributions = async () => {
-      // Using the environment variable for the GitHub token
-      const token = import.meta.env.GITHUB_TOKEN
-      const username = import.meta.env.GITHUB_API_URL // Your GitHub username from .env
+      const token = import.meta.env.VITE_GITHUB_TOKEN
+      const username = import.meta.env.VITE_GITHUB_USERNAME
+
+      if (!token || !username) {
+        console.error("GitHub token or username not found in environment variables")
+        return
+      }
 
       try {
         const response = await fetch("https://api.github.com/graphql", {
@@ -47,7 +42,16 @@ export function GitHubContributions() {
           }),
         })
 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
         const data = await response.json()
+        
+        if (data.errors) {
+          throw new Error(data.errors[0].message)
+        }
+
         setContributions(
           data.data.user.contributionsCollection.contributionCalendar
         )
@@ -115,5 +119,5 @@ function getContributionColor(count: number): string {
   if (count <= 3) return "bg-primary/20"
   if (count <= 6) return "bg-primary/40"
   if (count <= 9) return "bg-primary/60"
-  return "bg-primary"
+  return "bg-secondary"
 }
