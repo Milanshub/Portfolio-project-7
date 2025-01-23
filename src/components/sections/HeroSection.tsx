@@ -1,12 +1,13 @@
 import { motion, useScroll, useTransform } from "framer-motion"
 
 const gradientColors = [
-  "#000000", // Black
-  "#1a237e", // Deep Blue
-  "#1565c0", // Strong Blue
-  "#0d47a1", // Royal Blue
-  "#002171", // Navy
-]
+    "#000000", // Black
+    "#3f51b5", // Indigo
+    "#3949ab", // Royal Blue
+    "#303f9f", // Deep Royal Blue
+    "#283593", // Dark Royal Blue
+  ]
+  
 
 export function HeroSection() {
   const { scrollYProgress } = useScroll()
@@ -14,7 +15,7 @@ export function HeroSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background gradient */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20"
@@ -60,7 +61,7 @@ export function HeroSection() {
           style={{ y, opacity }}
         >
           <motion.h1 
-            className="text-7xl font-bold tracking-tight"
+            className="text-8xl font-bold tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -87,7 +88,7 @@ export function HeroSection() {
           </motion.h1>
 
           <motion.p
-            className="mt-8 text-2xl text-muted-foreground"
+            className="mt-8 text-3xl text-muted-foreground"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -103,7 +104,7 @@ export function HeroSection() {
           >
             <motion.a
               href="/public/assets/resume.pdf"
-              download="MyResume.pdf" 
+              download="Myesume.pdf" 
               className="px-8 py-3 rounded-full bg-secondary text-secondary-foreground font-medium"
               whileHover={{ 
                 scale: 1.05,

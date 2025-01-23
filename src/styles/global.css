@@ -1,20 +1,15 @@
-/* This tells Tailwind to include its basic styling reset (like removing default margins)
-like for examples html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, etc... */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Raleway:wght@300;400;500;600&display=swap');
+
+/* This tells Tailwind to include its basic styling reset */
 @tailwind base;    
 
-/* This lets you use pre-built components if you make them, like for example a button, a card, a modal, etc... */
+/* This lets you use pre-built components if you make them */
 @tailwind components;    
 
-/* This is the main one! It gives you all the utility classes like:
-   - "flex" for display: flex
-   - "p-4" for padding
-   - "text-red-500" for text colors
-   - "mt-2" for margin-top
-   etc... */
+/* This gives you all the utility classes */
 @tailwind utilities;
+
 /* Your custom base styles */
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -37,6 +32,13 @@ like for examples html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, etc... */
     --destructive-foreground: 210 40% 98%;
     --ring: 215 20.2% 65.1%;
     --radius: 0.5rem;
+
+    /* Chart colors */
+    --chart-1: 210 100% 50%;
+    --chart-2: 220 100% 50%;
+    --chart-3: 230 100% 50%;
+    --chart-4: 240 100% 50%;
+    --chart-5: 250 100% 50%;
   }
 
   .dark {
@@ -59,6 +61,13 @@ like for examples html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, etc... */
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
     --ring: 216 34% 17%;
+
+    /* Dark mode chart colors */
+    --chart-1: 210 70% 60%;
+    --chart-2: 220 70% 60%;
+    --chart-3: 230 70% 60%;
+    --chart-4: 240 70% 60%;
+    --chart-5: 250 70% 60%;
   }
 }
 
@@ -66,7 +75,61 @@ like for examples html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, etc... */
   * {
     @apply border-border;
   }
+
+  /* Apply fonts to specific elements */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-body antialiased bg-background text-foreground;
+  }
+
+  /* Additional base styles for better typography */
+  h1 {
+    @apply text-4xl font-extrabold md:text-5xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl font-bold md:text-4xl lg:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl font-bold md:text-3xl lg:text-4xl;
+  }
+
+  h4 {
+    @apply text-xl font-semibold md:text-2xl lg:text-3xl;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* Smooth scrolling for the whole page */
+  html {
+    @apply scroll-smooth;
+  }
+}
+
+/* Custom utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-muted-contribution {
+    --tw-bg-opacity: 1;
+    background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+  }
+
+  .bg-primary-contribution {
+    --tw-bg-opacity: 1;
+    background-color: rgb(96 165 250 / var(--tw-bg-opacity));
+  }
+
+  .bg-secondary-contribution {
+    --tw-bg-opacity: 1;
+    background-color: rgb(37 99 235 / var(--tw-bg-opacity));
   }
 }

@@ -1,3 +1,6 @@
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   /* This tells Tailwind to look for classes in your project and apply them to React components */
@@ -7,6 +10,11 @@ module.exports = {
   darkMode: ["class"],
   theme: {
   	extend: {
+		fontFamily: {
+        sans: ["Montserrat", ...fontFamily.sans],
+        heading: ["Montserrat", ...fontFamily.sans],
+        body: ["Raleway", ...fontFamily.sans],
+      },
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',

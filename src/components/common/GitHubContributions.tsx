@@ -3,9 +3,12 @@ import { ContributionsData } from "@/types/contributions"
 
 export function GitHubContributions() {
   const [contributions, setContributions] = useState<ContributionsData | null>(null)
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchContributions = async () => {
+      setLoading(true)
       const token = import.meta.env.VITE_GITHUB_TOKEN
       const username = import.meta.env.VITE_GITHUB_USERNAME
 
@@ -15,6 +18,9 @@ export function GitHubContributions() {
       }
 
       try {
+        const fromDate = `${selectedYear}-01-01T00:00:00`
+        const toDate = `${selectedYear}-12-31T23:59:59`
+
         const response = await fetch("https://api.github.com/graphql", {
           method: "POST",
           headers: {
@@ -25,7 +31,7 @@ export function GitHubContributions() {
             query: `
               query {
                 user(login: "${username}") {
-                  contributionsCollection {
+                  contributionsCollection(from: "${fromDate}", to: "${toDate}") {
                     contributionCalendar {
                       totalContributions
                       weeks {
@@ -57,13 +63,21 @@ export function GitHubContributions() {
         )
       } catch (error) {
         console.error("Error fetching GitHub contributions:", error)
+      } finally {
+        setLoading(false)
       }
     }
 
     fetchContributions()
-  }, [])
+  }, [selectedYear])
 
-  if (!contributions) {
+  // Changed from 5 to 3 years
+  const availableYears = Array.from(
+    { length: 3 },
+    (_, i) => new Date().getFullYear() - i
+  )
+
+  if (!contributions || loading) {
     return (
       <div className="mt-8">
         <h3 className="text-xl font-semibold mb-4">GitHub Contributions</h3>
@@ -76,17 +90,35 @@ export function GitHubContributions() {
 
   return (
     <div className="mt-8">
-      <h3 className="text-xl font-semibold mb-4">
-        GitHub Contributions ({contributions.totalContributions} in the last year)
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-semibold">
+          GitHub Contributions ({contributions.totalContributions} in {selectedYear})
+        </h3>
+        <div className="flex gap-2">
+          {availableYears.map((year) => (
+            <button
+              key={year}
+              onClick={() => setSelectedYear(year)}
+              className={`px-3 py-1 rounded-md transition-colors ${
+                selectedYear === year
+                  ? "bg-[#2d72c1] text-primary-foreground"
+                  : "bg-muted hover:bg-muted/80"
+              }`}
+            >
+              {year}
+            </button>
+          ))}
+        </div>
+      </div>
+      
       <div className="bg-background rounded-lg p-4 overflow-x-auto">
-        <div className="flex gap-1" style={{ minWidth: "max-content" }}>
+        <div className="flex gap-1 w-full justify-between" style={{ minWidth: "max-content" }}>
           {contributions.weeks.map((week, weekIndex) => (
             <div key={weekIndex} className="flex flex-col gap-1">
               {week.contributionDays.map((day) => (
                 <div
                   key={day.date}
-                  className={`w-3 h-3 rounded-sm ${getContributionColor(
+                  className={`w-3 h-3 rounded-sm contribution-square ${getContributionColor(
                     day.contributionCount
                   )}`}
                   title={`${day.contributionCount} contributions on ${new Date(
@@ -103,7 +135,9 @@ export function GitHubContributions() {
             {[0, 1, 4, 8, 12].map((level) => (
               <div
                 key={level}
-                className={`w-3 h-3 rounded-sm ${getContributionColor(level)}`}
+                className={`w-3 h-3 rounded-sm contribution-square ${getContributionColor(
+                  level
+                )}`}
               />
             ))}
           </div>
@@ -115,9 +149,10 @@ export function GitHubContributions() {
 }
 
 function getContributionColor(count: number): string {
-  if (count === 0) return "bg-muted"
-  if (count <= 3) return "bg-primary/20"
-  if (count <= 6) return "bg-primary/40"
-  if (count <= 9) return "bg-primary/60"
-  return "bg-secondary"
+    if (count === 0) return "bg-muted"
+    if (count <= 3) return "bg-[#1565c0]"  // Light Blue
+    if (count <= 6) return "bg-[#1565c0]"  // Light Blue
+    if (count <= 9) return "bg-[#1565c0]"  // Light Blue
+    if (count <= 12) return "bg-[#1565c0]" // Light Blue
+    return "bg-[#000000]" // Black for highest contributions
 }
