@@ -4,7 +4,7 @@ export const projectData: Project[] = [
     {
         id: 1,
         title: "Photographers Gallery",
-        description: "Multi-page photography portfolio website",
+        description: "Multi-page photography portfolio website built with React and Bootstrap. Features dynamic image galleries, responsive design, and smooth transitions.",
         image: "/images/photography.png",
         githubUrl: "https://github.com/Milanshub/Photography-Project-1",
         technologies: ["React", "JavaScript", "Bootstrap"],
