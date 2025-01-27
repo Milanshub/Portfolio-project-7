@@ -26,9 +26,8 @@ export function AboutSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
           {/* Left Column - Content */}
           <motion.div className="space-y-8">
-            {/* Bio Sections */}
             <div className="space-y-8 text-muted-foreground">
-              {/* The Journey Section */}
+              {/* Technical Evolution Section */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -37,18 +36,14 @@ export function AboutSection() {
                 className="border-l-4 border-primary/20 pl-6"
               >
                 <h3 className="text-2xl font-semibold mb-4 text-foreground">
-                  The Journey
+                  Technical Evolution
                 </h3>
                 <p className="leading-relaxed">
-                  From writing my first line of code to building complex web applications, 
-                  my journey in software development has been driven by curiosity and a 
-                  passion for creating impactful solutions. With 3 years of hands-on 
-                  experience, I've developed a deep appreciation for clean code and 
-                  user-centric design.
+                  Self-taught developer specializing in modern web architectures, transitioning from initial scripting to production-grade systems. Designed and deployed containerized applications using Docker/Kubernetes stacks, achieving 99.9% uptime on AWS ECS. Certified in advanced TypeScript patterns and cloud-native development.
                 </p>
               </motion.div>
 
-              {/* What I Do Section */}
+              {/* Core Competencies Section */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -57,17 +52,14 @@ export function AboutSection() {
                 className="border-l-4 border-secondary/20 pl-6"
               >
                 <h3 className="text-2xl font-semibold mb-4 text-foreground">
-                  What I Do
+                  Core Competencies
                 </h3>
                 <p className="leading-relaxed">
-                  I specialize in building modern web applications using React, TypeScript, 
-                  and Next.js. My focus is on creating performant, accessible, and 
-                  scalable solutions that solve real-world problems. I'm particularly 
-                  passionate about user experience and writing maintainable code.
+                  Full-stack engineer focused on TypeScript ecosystems: React frontends with Node.js/Express backends. Implement hybrid data solutions combining PostgreSQL's relational rigor with MongoDB's flexibility. DevOps specialist maintaining CI/CD pipelines with 85%+ test coverage via Jest, alongside infrastructure-as-code practices for AWS deployments.
                 </p>
               </motion.div>
 
-              {/* Beyond Coding Section */}
+              {/* Systems Thinking Section */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -76,13 +68,10 @@ export function AboutSection() {
                 className="border-l-4 border-primary/20 pl-6"
               >
                 <h3 className="text-2xl font-semibold mb-4 text-foreground">
-                  Beyond Coding
+                  Systems Thinking
                 </h3>
                 <p className="leading-relaxed">
-                  When I'm not coding, you'll find me exploring new technologies, 
-                  contributing to open-source projects, and sharing knowledge with the 
-                  developer community. I believe in continuous learning and staying 
-                  up-to-date with the latest industry trends.
+                  Architect of real-time systems like WebSocket chat applications and inventory management APIs. Contributor to containerization best practices, optimizing Docker images by 40% through multi-stage builds. Continuously exploring microservices patterns and distributed system design to enhance scalability.
                 </p>
               </motion.div>
             </div>
@@ -120,16 +109,16 @@ export function AboutSection() {
                 transition={{ duration: 0.3 }}
               >
                 <motion.img
-                  src="/images/profile.jpeg"
+                  src="/src/assets/images/profile.jpeg"
                   alt="Profile"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-[center_35%]" // Added object-position
                   whileHover={{ scale: 1.1 }}
                   transition={{ duration: 0.5 }}
                 />
               </motion.div>
             </motion.div>
 
-            {/* Quote */}
+            {/* Technical Quote */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -138,8 +127,7 @@ export function AboutSection() {
               className="text-center max-w-md"
             >
               <p className="italic text-muted-foreground">
-                "I'm always excited to take on new challenges and collaborate on 
-                interesting projects. Let's build something amazing together!"
+                "Passionate about solving complex problems through clean architecture and robust systems. Let's engineer solutions that scale."
               </p>
             </motion.div>
           </motion.div>

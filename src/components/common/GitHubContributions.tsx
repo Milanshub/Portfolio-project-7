@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { ContributionsData } from "@/types/contributions"
+import { validateGithubEnv } from "@/lib/schemas/github.schema"
+import { ContributionsData, GithubApiError } from "@/lib/validations/github"
 
 export function GitHubContributions() {
   const [contributions, setContributions] = useState<ContributionsData | null>(null)
@@ -9,28 +10,21 @@ export function GitHubContributions() {
   useEffect(() => {
     const fetchContributions = async () => {
       setLoading(true)
-      const token = import.meta.env.VITE_GITHUB_TOKEN
-      const username = import.meta.env.VITE_GITHUB_USERNAME
-
-      if (!token || !username) {
-        console.error("GitHub token or username not found in environment variables")
-        return
-      }
-
       try {
+        const env = validateGithubEnv()
         const fromDate = `${selectedYear}-01-01T00:00:00`
         const toDate = `${selectedYear}-12-31T23:59:59`
 
         const response = await fetch("https://api.github.com/graphql", {
           method: "POST",
           headers: {
-            Authorization: `bearer ${token}`,
+            Authorization: `bearer ${env.VITE_GITHUB_TOKEN}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             query: `
               query {
-                user(login: "${username}") {
+                user(login: "${env.VITE_GITHUB_USERNAME}") {
                   contributionsCollection(from: "${fromDate}", to: "${toDate}") {
                     contributionCalendar {
                       totalContributions
@@ -54,15 +48,17 @@ export function GitHubContributions() {
 
         const data = await response.json()
         
-        if (data.errors) {
-          throw new Error(data.errors[0].message)
+        if ((data as GithubApiError).errors) {
+          throw new Error((data as GithubApiError).errors?.[0]?.message || "Unknown GitHub API Error")
         }
 
         setContributions(
           data.data.user.contributionsCollection.contributionCalendar
         )
       } catch (error) {
-        console.error("Error fetching GitHub contributions:", error)
+        console.error("Error fetching GitHub contributions:", 
+          error instanceof Error ? error.message : "Unknown error"
+        )
       } finally {
         setLoading(false)
       }
@@ -71,7 +67,6 @@ export function GitHubContributions() {
     fetchContributions()
   }, [selectedYear])
 
-  // Changed from 5 to 3 years
   const availableYears = Array.from(
     { length: 3 },
     (_, i) => new Date().getFullYear() - i
@@ -112,7 +107,10 @@ export function GitHubContributions() {
       </div>
       
       <div className="bg-background rounded-lg p-4 overflow-x-auto">
-        <div className="flex gap-1 w-full justify-between" style={{ minWidth: "max-content" }}>
+        <div 
+          className="flex gap-1 w-full justify-between" 
+          style={{ minWidth: "max-content" }}
+        >
           {contributions.weeks.map((week, weekIndex) => (
             <div key={weekIndex} className="flex flex-col gap-1">
               {week.contributionDays.map((day) => (
@@ -149,10 +147,10 @@ export function GitHubContributions() {
 }
 
 function getContributionColor(count: number): string {
-    if (count === 0) return "bg-muted"
-    if (count <= 3) return "bg-[#1565c0]"  // Light Blue
-    if (count <= 6) return "bg-[#1565c0]"  // Light Blue
-    if (count <= 9) return "bg-[#1565c0]"  // Light Blue
-    if (count <= 12) return "bg-[#1565c0]" // Light Blue
-    return "bg-[#000000]" // Black for highest contributions
+  if (count === 0) return "bg-muted"
+  if (count <= 3) return "bg-[#1565c0]"  // Light Blue
+  if (count <= 6) return "bg-[#1565c0]"  // Light Blue
+  if (count <= 9) return "bg-[#1565c0]"  // Light Blue
+  if (count <= 12) return "bg-[#1565c0]" // Light Blue
+  return "bg-[#000000]" // Black for highest contributions
 }

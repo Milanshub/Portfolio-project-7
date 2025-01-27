@@ -9,6 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
+// Project card component
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
     <motion.div
@@ -18,13 +19,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
     >
-      {/* Background Number */}
-      <div 
-        className="absolute -left-8 top-0 text-[12rem] font-bold text-muted/10 dark:text-muted/5 select-none"
-        style={{ zIndex: 0 }}
-      >
-        {project.id.toString().padStart(2, '0')}
-      </div>
 
       <Card className="relative z-10 overflow-hidden h-[32rem] border-border/50 dark:border-border/30 dark:bg-background/50 dark:backdrop-blur-sm transition-all duration-300 hover:shadow-xl dark:hover:shadow-primary/10">
         <div className="flex flex-col h-full">

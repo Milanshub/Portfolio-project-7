@@ -13,6 +13,7 @@ import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { motion } from "framer-motion"
 
 export function ProjectsSection() {
+  // plugin is a ref that holds the autoplay plugin
   const plugin = useRef(
     Autoplay({
       delay: 3000,

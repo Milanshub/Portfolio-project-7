@@ -25,26 +25,26 @@ const skills = [
   },
   { 
     name: "Node.js", 
-    level: 80, 
+    level: 85, 
     color: "#339933",
     icon: <Server className="w-6 h-6" strokeWidth={1.5} /> 
   },
   { 
-    name: "Next.js", 
-    level: 85, 
-    color: "#000000",
+    name: "Docker", 
+    level: 80, 
+    color: "#FF4F64",
     icon: <Layers className="w-6 h-6" strokeWidth={1.5} /> 
   },
   { 
     name: "Tailwind CSS", 
     level: 90, 
-    color: "#38B2AC",
+    color: "#8B5CF6",
     icon: <Palette className="w-6 h-6" strokeWidth={1.5} /> 
   },
   { 
-    name: "PostgreSQL", 
+    name: "Supabase", 
     level: 75, 
-    color: "#336791",
+    color: "#F59E0B",
     icon: <Database className="w-6 h-6" strokeWidth={1.5} /> 
   },
 ]

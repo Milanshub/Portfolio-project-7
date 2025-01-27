@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
+import { useEffect, useState, useCallback } from "react"
+import { motion, useReducedMotion } from "framer-motion"
+import { throttle } from 'lodash' 
 import { 
   Home,
   User,
@@ -8,6 +9,7 @@ import {
   Sun,
   Moon,
 } from "lucide-react"
+import { useTheme } from "next-themes"
 
 const navItems = [
   { id: "home", label: "Home", icon: Home },
@@ -17,27 +19,34 @@ const navItems = [
 ]
 
 export function Navigation() {
+    // track which section in view
     const [activeSection, setActiveSection] = useState("home")
-    const [isDark, setIsDark] = useState(false)
+    // theme handling with next-themes
+    const { theme, setTheme } = useTheme()
+    // reduce motion state
+    const shouldReduceMotion = useReducedMotion() ?? false
 
-    // Add theme initialization effect
-    useEffect(() => {
-        setIsDark(document.documentElement.classList.contains('dark'))
-    }, [])
+    // throttle function to limit the number of times the scroll handler is called
+    const handleScroll = throttle(() => {
+      if (window.scrollY < 100) {
+        setActiveSection("home")
+      }
+    }, 100)
 
-    // Theme toggle function
-    const toggleTheme = () => {
-        document.documentElement.classList.toggle('dark')
-        setIsDark(!isDark)
-        localStorage.setItem('theme', isDark ? 'light' : 'dark')
-    }
+    // toggle theme function - simplified with next-themes
+    const toggleTheme = useCallback(() => {
+      setTheme(theme === "dark" ? "light" : "dark")
+    }, [theme, setTheme])
 
+    // Intersection Observer setup
     useEffect(() => {
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              setActiveSection(entry.target.id)
+              requestAnimationFrame(() => {
+                setActiveSection(entry.target.id)
+              })
             }
           })
         },
@@ -46,34 +55,38 @@ export function Navigation() {
           rootMargin: '-20% 0px -30% 0px'
         }
       )
+      // get the elements to observe
+      const elements = navItems.map(({ id }) => document.getElementById(id)).filter(Boolean)
+      // observe the elements
+      elements.forEach(element => element && observer.observe(element))
   
-      navItems.forEach(({ id }) => {
-        const element = document.getElementById(id)
-        if (element) observer.observe(element)
-      })
+      // add event listener for scroll
+      window.addEventListener('scroll', handleScroll, { passive: true })
   
-      // Set home as active when at the top of the page
-      const handleScroll = () => {
-        if (window.scrollY < 100) {
-          setActiveSection("home")
-        }
-      }
-  
-      window.addEventListener('scroll', handleScroll)
-      handleScroll()
-  
+      // cleanup function to disconnect the observer and remove the event listener
       return () => {
         observer.disconnect()
         window.removeEventListener('scroll', handleScroll)
+        handleScroll.cancel()
       }
-    }, [])
+    }, [handleScroll])
+
+    // Motion variants
+    const navVariants = shouldReduceMotion ? {
+      hidden: { opacity: 1, x: 0 },
+      visible: { opacity: 1, x: 0 }
+    } : {
+      hidden: { opacity: 0, x: 20 },
+      visible: { opacity: 1, x: 0 }
+    }
 
     return (
         <motion.nav 
             className="fixed right-8 top-1/2 -translate-y-1/2 z-50"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            variants={navVariants}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: shouldReduceMotion ? 0 : 0.5 }}
         >
             <motion.div 
                 className="
@@ -82,41 +95,42 @@ export function Navigation() {
                 rounded-full p-2 
                 border border-border dark:border-border/50
                 dark:shadow-lg dark:shadow-primary/5"
-                initial={{ opacity: 0 }}
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: shouldReduceMotion ? 0 : 0.2 }}
             >
                 <ul className="flex flex-col gap-4">
-                    {/* Navigation Items */}
                     {navItems.map(({ id, label, icon: Icon }) => (
                         <motion.li 
                             key={id}
-                            initial={{ opacity: 0, x: 20 }}
+                            initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: navItems.findIndex(item => item.id === id) * 0.1 }}
+                            transition={{ 
+                              delay: shouldReduceMotion ? 0 : navItems.findIndex(item => item.id === id) * 0.1 
+                            }}
                         >
                             <a
                                 href={`#${id}`}
                                 className="group relative flex items-center"
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+                                    document.getElementById(id)?.scrollIntoView({ behavior: shouldReduceMotion ? "auto" : "smooth" })
                                 }}
                             >
-                                {/* Label tooltip */}
-                                <motion.span className="absolute right-full mr-4 px-2 py-1 rounded-md bg-background/50 backdrop-blur-sm border border-border text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <motion.span 
+                                    className="absolute right-full mr-4 px-2 py-1 rounded-md bg-background/50 backdrop-blur-sm border border-border text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                >
                                     {label}
                                 </motion.span>
 
-                                {/* Icon container */}
                                 <motion.div
                                     className={`p-2 rounded-full transition-colors duration-200 ${
                                         activeSection === id
                                             ? "bg-primary/20 text-primary"
                                             : "text-muted-foreground hover:text-primary hover:bg-primary/10"
                                     }`}
-                                    whileHover={{ scale: 1.1 }}
-                                    whileTap={{ scale: 0.95 }}
+                                    whileHover={shouldReduceMotion ? {} : { scale: 1.1 }}
+                                    whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
                                 >
                                     <Icon className="w-5 h-5" strokeWidth={1.5} />
                                 </motion.div>
@@ -124,32 +138,30 @@ export function Navigation() {
                         </motion.li>
                     ))}
 
-                    {/* Divider */}
                     <div className="mx-2 border-t border-border/50" />
 
-                    {/* Theme Toggle */}
                     <motion.li
-                        initial={{ opacity: 0, x: 20 }}
+                        initial={shouldReduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5 }}
+                        transition={{ delay: shouldReduceMotion ? 0 : 0.5 }}
                     >
                         <button
                             className="group relative flex items-center"
                             onClick={toggleTheme}
                             aria-label="Toggle theme"
                         >
-                            {/* Label tooltip */}
-                            <motion.span className="absolute right-full mr-4 px-2 py-1 rounded-md bg-background/50 backdrop-blur-sm border border-border text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            <motion.span 
+                                className="absolute right-full mr-4 px-2 py-1 rounded-md bg-background/50 backdrop-blur-sm border border-border text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                            >
                                 Toggle theme
                             </motion.span>
 
-                            {/* Icon container */}
                             <motion.div
                                 className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10"
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={shouldReduceMotion ? {} : { scale: 1.1 }}
+                                whileTap={shouldReduceMotion ? {} : { scale: 0.95 }}
                             >
-                                {isDark ? (
+                                {theme === "dark" ? (
                                     <Sun className="w-5 h-5" strokeWidth={1.5} />
                                 ) : (
                                     <Moon className="w-5 h-5" strokeWidth={1.5} />
