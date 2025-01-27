@@ -26,9 +26,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
         {project.id.toString().padStart(2, '0')}
       </div>
 
-      <Card className="relative z-10 overflow-hidden h-full">
+      <Card className="relative z-10 overflow-hidden h-[32rem]">
         <div className="flex flex-col h-full">
-          <div className="relative aspect-video overflow-hidden">
+          <div className="relative h-48 overflow-hidden">
             <motion.img
               src={project.image}
               alt={project.title}
@@ -40,8 +40,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
           <div className="p-6 flex flex-col flex-grow">
             <CardHeader className="p-0">
-              <CardTitle className="text-2xl font-bold">{project.title}</CardTitle>
-              <CardDescription>{project.description}</CardDescription>
+              <CardTitle className="text-2xl font-bold line-clamp-1">{project.title}</CardTitle>
+              <CardDescription className="line-clamp-2">{project.description}</CardDescription>
             </CardHeader>
 
             <CardContent className="p-0 mt-4 flex-grow">

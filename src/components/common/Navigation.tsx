@@ -15,27 +15,43 @@ const navItems = [
 ]
 
 export function Navigation() {
-  const [activeSection, setActiveSection] = useState("home")
+    const [activeSection, setActiveSection] = useState("home")
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id)
-          }
-        })
-      },
-      { threshold: 0.5 }
-    )
-
-    navItems.forEach(({ id }) => {
-      const element = document.getElementById(id)
-      if (element) observer.observe(element)
-    })
-
-    return () => observer.disconnect()
-  }, [])
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveSection(entry.target.id)
+            }
+          })
+        },
+        { 
+          threshold: 0.2, // Reduced threshold
+          rootMargin: '-20% 0px -30% 0px' // Added margins to adjust observation area
+        }
+      )
+  
+      navItems.forEach(({ id }) => {
+        const element = document.getElementById(id)
+        if (element) observer.observe(element)
+      })
+  
+      // Set home as active when at the top of the page
+      const handleScroll = () => {
+        if (window.scrollY < 100) { // Adjust this value as needed
+          setActiveSection("home")
+        }
+      }
+  
+      window.addEventListener('scroll', handleScroll)
+      handleScroll() // Call it initially
+  
+      return () => {
+        observer.disconnect()
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }, [])
 
   return (
     <motion.nav 
