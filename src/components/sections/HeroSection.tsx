@@ -1,27 +1,39 @@
 import { motion, useScroll, useTransform } from "framer-motion"
+import { useTheme } from "next-themes"
 
-const gradientColors = [
+const gradientColors = {
+  light: [
     "#000000", // Black
     "#3f51b5", // Indigo
     "#3949ab", // Royal Blue
     "#303f9f", // Deep Royal Blue
     "#283593", // Dark Royal Blue
+  ],
+  dark: [
+    "#ffffff", // White
+    "#8c9eff", // Light Blue
+    "#536dfe", // Bright Blue
+    "#3d5afe", // Vivid Blue
+    "#304ffe", // Deep Blue
   ]
-  
+}
 
 export function HeroSection() {
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], [0, -50])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
+  const { theme } = useTheme()
+  const isDark = theme === "dark"
+  const colors = isDark ? gradientColors.dark : gradientColors.light
 
   return (
     <section 
-        id="home"
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Animated background gradient */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20"
+        className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 dark:from-primary/30 dark:to-secondary/30"
         animate={{
           scale: [1, 1.2, 1],
           rotate: [0, 180, 360],
@@ -37,9 +49,9 @@ export function HeroSection() {
       {[...Array(3)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-[50rem] h-[50rem] rounded-full opacity-20"
+          className="absolute w-[50rem] h-[50rem] rounded-full opacity-20 dark:opacity-30"
           style={{
-            background: `radial-gradient(circle, ${gradientColors[i]} 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${colors[i]} 0%, transparent 70%)`,
             top: `${30 + i * 20}%`,
             left: `${20 + i * 30}%`,
             transform: 'translate(-50%, -50%)',
@@ -73,7 +85,7 @@ export function HeroSection() {
             <motion.span
               className="relative inline-block bg-clip-text text-transparent"
               style={{
-                background: `linear-gradient(45deg, ${gradientColors[0]}, ${gradientColors[2]}, ${gradientColors[4]})`,
+                background: `linear-gradient(45deg, ${colors[0]}, ${colors[2]}, ${colors[4]})`,
                 backgroundClip: 'text',
                 WebkitBackgroundClip: 'text',
               }}
@@ -107,8 +119,8 @@ export function HeroSection() {
           >
             <motion.a
               href="/public/assets/resume.pdf"
-              download="Myesume.pdf" 
-              className="px-8 py-3 rounded-full bg-secondary text-secondary-foreground font-medium"
+              download="MyResume.pdf" 
+              className="px-8 py-3 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 dark:hover:bg-primary/80 transition-colors duration-300"
               whileHover={{ 
                 scale: 1.05,
                 boxShadow: '0 0 20px rgba(0, 0, 0, 0.5)'
@@ -118,8 +130,6 @@ export function HeroSection() {
               Resume
             </motion.a>
           </motion.div>
-         
-    
         </motion.div>
       </div>
     </section>

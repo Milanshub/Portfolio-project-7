@@ -82,7 +82,7 @@
   }
 
   body {
-    @apply font-body antialiased bg-background text-foreground;
+    @apply font-body antialiased bg-background text-foreground transition-colors duration-300;
   }
 
   /* Additional base styles for better typography */
@@ -106,9 +106,37 @@
     @apply leading-relaxed;
   }
 
-  /* Smooth scrolling for the whole page */
+  /* Smooth scrolling and theme transitions */
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth transition-colors duration-300;
+  }
+
+  /* Add transitions to common elements that change with theme */
+  *, *::before, *::after {
+    @apply transition-colors duration-300;
+  }
+
+  /* Ensure background transitions are smooth */
+  .bg-background,
+  .bg-primary,
+  .bg-secondary,
+  .bg-muted,
+  .bg-accent {
+    @apply transition-colors duration-300;
+  }
+
+  /* Ensure text transitions are smooth */
+  .text-foreground,
+  .text-primary,
+  .text-secondary,
+  .text-muted-foreground {
+    @apply transition-colors duration-300;
+  }
+
+  /* Ensure border transitions are smooth */
+  .border,
+  .border-border {
+    @apply transition-colors duration-300;
   }
 }
 

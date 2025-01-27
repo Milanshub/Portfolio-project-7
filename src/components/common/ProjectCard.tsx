@@ -1,3 +1,5 @@
+import { ProjectCardProps } from "@/types/project"
+import { motion } from "framer-motion"
 import {
     Card,
     CardContent,
@@ -6,8 +8,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { ProjectCardProps } from "@/types/project"
-import { motion } from "framer-motion"
 
 export function ProjectCard({ project }: ProjectCardProps) {
   return (
@@ -20,13 +20,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
     >
       {/* Background Number */}
       <div 
-        className="absolute -left-8 top-0 text-[12rem] font-bold text-muted/10 select-none"
+        className="absolute -left-8 top-0 text-[12rem] font-bold text-muted/10 dark:text-muted/5 select-none"
         style={{ zIndex: 0 }}
       >
         {project.id.toString().padStart(2, '0')}
       </div>
 
-      <Card className="relative z-10 overflow-hidden h-[32rem]">
+      <Card className="relative z-10 overflow-hidden h-[32rem] border-border/50 dark:border-border/30 dark:bg-background/50 dark:backdrop-blur-sm transition-all duration-300 hover:shadow-xl dark:hover:shadow-primary/10">
         <div className="flex flex-col h-full">
           <div className="relative h-48 overflow-hidden">
             <motion.img
@@ -40,8 +40,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
           <div className="p-6 flex flex-col flex-grow">
             <CardHeader className="p-0">
-              <CardTitle className="text-2xl font-bold line-clamp-1">{project.title}</CardTitle>
-              <CardDescription className="line-clamp-2">{project.description}</CardDescription>
+              <CardTitle className="text-2xl font-bold line-clamp-1 dark:text-primary/90">{project.title}</CardTitle>
+              <CardDescription className="line-clamp-2 dark:text-muted-foreground/80">{project.description}</CardDescription>
             </CardHeader>
 
             <CardContent className="p-0 mt-4 flex-grow">
@@ -49,7 +49,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 {project.technologies.map((tech) => (
                   <span 
                     key={tech}
-                    className="px-3 py-1 bg-primary/10 rounded-full text-sm"
+                    className="px-3 py-1 bg-primary/10 dark:bg-primary/20 rounded-full text-sm dark:text-primary-foreground/90 transition-colors duration-300"
                   >
                     {tech}
                   </span>
@@ -62,7 +62,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg transition-all duration-300 dark:shadow-lg dark:shadow-primary/20"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
