@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { validateGithubEnv } from "@/lib/schemas/github.schema"
 import { ContributionsData, GithubApiError } from "@/lib/validations/github"
+import { logger } from "@/config/logger"
 
 export function GitHubContributions() {
   const [contributions, setContributions] = useState<ContributionsData | null>(null)
@@ -9,6 +10,7 @@ export function GitHubContributions() {
 
   useEffect(() => {
     const fetchContributions = async () => {
+      logger.info("Fetching GitHub contributions")
       setLoading(true)
       try {
         const env = validateGithubEnv()
@@ -56,9 +58,7 @@ export function GitHubContributions() {
           data.data.user.contributionsCollection.contributionCalendar
         )
       } catch (error) {
-        console.error("Error fetching GitHub contributions:", 
-          error instanceof Error ? error.message : "Unknown error"
-        )
+        logger.error("Error fetching GitHub contributions:", error as Error)
       } finally {
         setLoading(false)
       }

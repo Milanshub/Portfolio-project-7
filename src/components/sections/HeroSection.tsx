@@ -57,7 +57,7 @@ export function HeroSection() {
 
   // Remove button hover handlers and keep only name hover handlers
   const handleNameHover = () => {
-    cursorSize.set(120) // Larger size for name hover
+    cursorSize.set(200) // Larger size for name hover
   }
 
   const handleNameLeave = () => {
@@ -121,16 +121,16 @@ export function HeroSection() {
 
       {/* Floating Text Container with even more padding */}
       <motion.div 
-        className="relative z-10 text-center space-y-6"
+        className="relative z-10 text-center"
         style={{
           rotateX,
           rotateY,
           transformStyle: 'preserve-3d'
         }}
       >
-        {/* Name section with larger hover area but maintaining visual spacing */}
+        {/* Name section with even larger hover area */}
         <motion.h1
-          className="text-6xl md:text-8xl font-bold tracking-tighter py-16"
+          className="text-6xl md:text-8xl font-bold tracking-tighter py-24 mb-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -142,7 +142,7 @@ export function HeroSection() {
             onMouseEnter={handleNameHover}
             onMouseLeave={handleNameLeave}
           >
-            I'm{" "}
+            Hello, I'm{" "}
           </span>
           <motion.span
             className="relative inline-block bg-clip-text text-transparent px-4 py-12"
@@ -169,7 +169,7 @@ export function HeroSection() {
             onMouseEnter={handleNameHover}
             onMouseLeave={handleNameLeave}
           >
-            Milan
+            Milan.
           </motion.span>
           <motion.span 
             className="ml-2 text-muted-foreground px-4 py-12 inline-block"
@@ -178,32 +178,34 @@ export function HeroSection() {
             onMouseEnter={handleNameHover}
             onMouseLeave={handleNameLeave}
           >
-            .
           </motion.span>
         </motion.h1>
 
-        {/* Dynamic Subheading */}
-        <motion.p
-          className="text-xl md:text-2xl font-medium max-w-2xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          A passionate developer crafting beautiful and functional web experiences.
-        </motion.p>
-
-        {/* Button with removed cursor effects */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="inline-block p-8"
-        >
-          <button 
-            className="px-12 py-4 rounded-full bg-primary/10 hover:bg-primary/20 backdrop-blur-sm border border-primary/20 text-primary font-medium transition-all"
+        {/* Container for subheading and button */}
+        <div className="-mt-20 relative">
+          {/* Dynamic Subheading */}
+          <motion.p
+            className="text-xl md:text-2xl font-medium max-w-2xl mx-auto mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
           >
-            Resume
-          </button>
-        </motion.div>
+            A passionate developer crafting beautiful and functional web experiences.
+          </motion.p>
+
+          {/* Animated Resume Button */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-block p-8"
+          >
+            <button 
+              className="px-12 py-4 rounded-full bg-primary/10 hover:bg-primary/20 backdrop-blur-sm border border-primary/20 text-primary font-medium transition-all"
+            >
+              Resume
+            </button>
+          </motion.div>
+        </div>
       </motion.div>
 
       {/* Floating Grid Particles */}
