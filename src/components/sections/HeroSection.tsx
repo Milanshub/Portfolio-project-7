@@ -1,38 +1,79 @@
 import { motion, useMotionTemplate, useMotionValue, useTransform } from "framer-motion"
 import { useTheme } from "next-themes"
-
-const gradientColors = {
-  light: [
-    "#000000", // Black
-    "#3f51b5", // Indigo
-    "#3949ab", // Royal Blue
-    "#303f9f", // Deep Royal Blue
-    "#283593", // Dark Royal Blue
-  ],
-  dark: [
-    "#F4F4FF", // Bright tech white
-    "#E2E1FF", // Tech purple
-    "#D1D1FF", // Neon purple
-    "#C0BEFF", // Deep tech purple
-    "#A7A4FF"  // Rich tech purple
-  ]
-} as const
+import { useMemo, useCallback, useEffect } from 'react'
+import { measurePerformance } from '../../utils/performance'
 
 export function HeroSection() {
+  // Performance measurement in development
+  useEffect(() => {
+    const endMeasure = measurePerformance('HeroSection')
+    return endMeasure
+  })
+
+  const { theme } = useTheme()
+  
+  // Motion values
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-  const rotateX = useTransform(mouseY, [0, 1], [-5, 5])
-  const rotateY = useTransform(mouseX, [0, 1], [5, -5])
-
-  // Enhanced mouse effects
   const cursorX = useMotionValue(-100)
   const cursorY = useMotionValue(-100)
   const cursorSize = useMotionValue(16)
+
+  // Create transforms outside of useMemo
+  const rotateX = useTransform(mouseY, [0, 1], [-5, 5])
+  const rotateY = useTransform(mouseX, [0, 1], [5, -5])
   
-  // Theme handling
-  const { theme } = useTheme()
-  const colors = theme === 'dark' ? gradientColors.dark : gradientColors.light
-  
+  // Optimize mouse move handler
+  const handleMouseMove = useCallback((e: React.PointerEvent) => {
+    const bounds = e.currentTarget.getBoundingClientRect()
+    
+    requestAnimationFrame(() => {
+      mouseX.set((e.clientX - bounds.left) / bounds.width)
+      mouseY.set((e.clientY - bounds.top) / bounds.height)
+      cursorX.set(e.clientX)
+      cursorY.set(e.clientY)
+    })
+  }, [mouseX, mouseY, cursorX, cursorY])
+
+  const handleNameHover = useCallback(() => {
+    requestAnimationFrame(() => cursorSize.set(200))
+  }, [cursorSize])
+
+  const handleNameLeave = useCallback(() => {
+    requestAnimationFrame(() => cursorSize.set(40))
+  }, [cursorSize])
+
+  const handleSectionLeave = useCallback(() => {
+    requestAnimationFrame(() => {
+      document.body.style.cursor = 'auto'
+      cursorSize.set(16)
+      cursorX.set(-100)
+      cursorY.set(-100)
+    })
+  }, [cursorSize, cursorX, cursorY])
+
+  const handleSectionEnter = useCallback(() => {
+    requestAnimationFrame(() => {
+      document.body.style.cursor = 'none'
+      cursorSize.set(40)
+    })
+  }, [cursorSize])
+
+  // Memoize animation variants
+  const cursorVariants = useMemo(() => ({
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        mass: 0.8,
+      }
+    }
+  }), [])
+
   // Create a more dynamic glow effect that follows the mouse
   const glowBackground = useMotionTemplate`
     radial-gradient(
@@ -43,37 +84,19 @@ export function HeroSection() {
     )
   `
 
-  const handleMouseMove = (e: React.PointerEvent) => {
-    const bounds = e.currentTarget.getBoundingClientRect()
-    
-    // Update rotation values
-    mouseX.set((e.clientX - bounds.left) / bounds.width)
-    mouseY.set((e.clientY - bounds.top) / bounds.height)
-    
-    // Update cursor position - Fixed positioning
-    cursorX.set(e.clientX)  // Changed to use clientX directly
-    cursorY.set(e.clientY)  // Changed to use clientY directly
-  }
-
-  // Remove button hover handlers and keep only name hover handlers
-  const handleNameHover = () => {
-    cursorSize.set(200) // Larger size for name hover
-  }
-
-  const handleNameLeave = () => {
-    cursorSize.set(40) // Back to normal size
-  }
-
   return (
     <section 
-      className="relative h-screen flex items-center justify-center overflow-hidden cursor-none"
+      id="home"
+      className="relative h-screen flex items-center justify-center overflow-hidden"
       onPointerMove={handleMouseMove}
-      onPointerEnter={() => cursorSize.set(40)}
-      onPointerLeave={() => cursorSize.set(16)}
+      onPointerEnter={handleSectionEnter}
+      onPointerLeave={handleSectionLeave}
     >
-      {/* Custom Cursor - Updated with smoother transitions */}
       <motion.div
         className="fixed w-4 h-4 pointer-events-none mix-blend-difference"
+        variants={cursorVariants}
+        initial="hidden"
+        animate="visible"
         style={{
           position: 'fixed',
           left: 0,
@@ -86,12 +109,6 @@ export function HeroSection() {
           borderRadius: '50%',
           zIndex: 9999,
           transform: 'translate(-50%, -50%)',
-        }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 300, // Reduced stiffness for smoother transitions
-          damping: 25,
-          mass: 0.8 // Increased mass for smoother movement
         }}
       />
 
@@ -145,39 +162,30 @@ export function HeroSection() {
             Hello, I'm{" "}
           </span>
           <motion.span
-            className="relative inline-block bg-clip-text text-transparent px-4 py-12"
-            style={{
-              background: `linear-gradient(60deg, 
-                ${colors[0]}, 
-                ${colors[1]}, 
-                ${colors[2]}, 
-                ${colors[3]}, 
-                ${colors[4]},
-                ${colors[0]})`,
-              backgroundSize: '300% 300%',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-            }}
+            className={`
+              relative inline-block px-4 py-12
+              bg-gradient-to-r from-primary via-secondary to-primary
+              dark:from-primary/90 dark:via-secondary/90 dark:to-primary/90
+              bg-clip-text text-transparent
+              bg-[length:200%_auto]
+              transition-all duration-300
+            `}
             animate={{
-              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              backgroundPosition: ['0%', '100%', '0%'],
             }}
             transition={{
-              duration: 8,
-              ease: "easeInOut",
+              duration: 10,
+              ease: "linear",
               repeat: Infinity,
+            }}
+            style={{
+              // Fallback color during theme transition
+              color: theme === 'dark' ? 'hsl(var(--primary))' : 'hsl(var(--primary))',
             }}
             onMouseEnter={handleNameHover}
             onMouseLeave={handleNameLeave}
           >
             Milan.
-          </motion.span>
-          <motion.span 
-            className="ml-2 text-muted-foreground px-4 py-12 inline-block"
-            animate={{ opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            onMouseEnter={handleNameHover}
-            onMouseLeave={handleNameLeave}
-          >
           </motion.span>
         </motion.h1>
 

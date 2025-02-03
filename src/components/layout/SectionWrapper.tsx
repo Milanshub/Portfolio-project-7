@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { ReactNode } from "react"
+import { ReactNode, memo } from "react"
 
 interface SectionWrapperProps {
   children: ReactNode
@@ -7,16 +7,21 @@ interface SectionWrapperProps {
   className?: string
 }
 
-export function SectionWrapper({ 
+// Memoize gradient overlay
+const GradientOverlay = memo(() => (
+  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:via-primary/10 opacity-50" />
+))
+
+export const SectionWrapper = memo(({ 
   children, 
   id, 
   className = ""
-}: SectionWrapperProps) {
+}: SectionWrapperProps) => {
   return (
     <motion.section 
       id={id}
       className={`
-        min-h-screen py-20 relative 
+        relative min-h-screen py-20
         flex items-center 
         bg-gradient-to-b from-transparent via-background to-transparent
         dark:from-background/0 dark:via-background/80 dark:to-background/0
@@ -27,13 +32,15 @@ export function SectionWrapper({
       transition={{ duration: 0.8 }}
       viewport={{ once: true, margin: "-100px" }}
     >
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent dark:via-primary/10 opacity-50" />
+      <GradientOverlay />
       
-      {/* Content */}
       <div className="relative w-full">
         {children}
       </div>
     </motion.section>
   )
-} 
+})
+
+// Add display names
+GradientOverlay.displayName = 'GradientOverlay'
+SectionWrapper.displayName = 'SectionWrapper' 

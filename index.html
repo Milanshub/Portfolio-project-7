@@ -7,15 +7,19 @@
     <title>Milan's Portfolio</title>
 
     <script>
-      // Check saved theme or system preference
-      if (
-        localStorage.theme === 'dark' || 
-        (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      ) {
-        document.documentElement.classList.add('dark')
-      } else {
-        document.documentElement.classList.remove('dark')
-      }
+      (function() {
+        try {
+          const isDark = localStorage.theme === 'dark' || 
+            (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+        } catch (e) {
+          console.error('Theme initialization error:', e);
+        }
+      })();
+    </script>
+    <!-- Performance monitoring -->
+    <script>
+      window.performance.mark('app-start');
     </script>
   </head>
   <body>

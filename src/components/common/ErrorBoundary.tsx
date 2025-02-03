@@ -23,9 +23,22 @@ interface ErrorBoundaryProps {
     }
   
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+      // Detailed error logging
       logger.error('ErrorBoundary caught an error:', error, {
-        componentStack: errorInfo.componentStack
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        componentStack: errorInfo.componentStack,
+        errorInfo
       });
+
+      // Log to console in development
+      if (process.env.NODE_ENV === 'development') {
+        console.group('🚨 React ErrorBoundary');
+        console.error('Error:', error);
+        console.error('Component Stack:', errorInfo.componentStack);
+        console.groupEnd();
+      }
     }
   
     render() {
