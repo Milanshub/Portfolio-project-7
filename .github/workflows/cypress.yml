@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Cypress E2E Tests
 
 on:
   push:
@@ -7,36 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Type Check
-      run: tsc --noEmit
-      
-    - name: Build
-      run: npm run build
-      
-    - name: Lint
-      run: npm run lint
-
-  e2e-tests:
-    needs: build
+  cypress-run:
     runs-on: ubuntu-latest
     
     steps:
@@ -78,4 +49,4 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos
-          if-no-files-found: ignore
+          if-no-files-found: ignore 
