@@ -23,18 +23,24 @@ describe('Portfolio Website E2E Tests', () => {
         })
       })
 
-      // Test navigation to each section
+      // Test navigation to each section with better waiting strategy
       cy.contains('About').click()
-      cy.get('#about').should('be.visible')
-      cy.wait(500) // Wait for scroll animation
+      cy.get('#about', { timeout: 10000 })
+        .should('exist')
+        .and('be.visible')
+        .and('have.css', 'opacity', '1')
       
       cy.contains('Skills').click()
-      cy.get('#skills').should('be.visible')
-      cy.wait(500)
+      cy.get('#skills', { timeout: 10000 })
+        .should('exist')
+        .and('be.visible')
+        .and('have.css', 'opacity', '1')
       
       cy.contains('Projects').click()
-      cy.get('#projects').should('be.visible')
-      cy.wait(500)
+      cy.get('#projects', { timeout: 10000 })
+        .should('exist')
+        .and('be.visible')
+        .and('have.css', 'opacity', '1')
       
       cy.contains('Home').click()
       cy.window().its('scrollY').should('equal', 0)
