@@ -4,7 +4,7 @@ import { useMemo, useCallback, useEffect } from 'react'
 import { measurePerformance } from '../../utils/performance'
 
 export function HeroSection() {
-  // Performance measurement in development
+  // Performance measurement in development environment
   useEffect(() => {
     const endMeasure = measurePerformance('HeroSection')
     return endMeasure
@@ -12,35 +12,38 @@ export function HeroSection() {
 
   const { theme } = useTheme()
   
-  // Motion values
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const cursorX = useMotionValue(-100)
-  const cursorY = useMotionValue(-100)
-  const cursorSize = useMotionValue(16)
+  // Motion values for cursor and mouse tracking
+  const mouseX = useMotionValue(0)        // Tracks mouse X position (0 to 1)
+  const mouseY = useMotionValue(0)        // Tracks mouse Y position (0 to 1)
+  const cursorX = useMotionValue(-100)    // Actual cursor X position in pixels
+  const cursorY = useMotionValue(-100)    // Actual cursor Y position in pixels
+  const cursorSize = useMotionValue(16)   // Dynamic cursor size
 
-  // Create transforms outside of useMemo
-  const rotateX = useTransform(mouseY, [0, 1], [-5, 5])
-  const rotateY = useTransform(mouseX, [0, 1], [5, -5])
+  // Transform mouse position into rotation values
+  const rotateX = useTransform(mouseY, [0, 1], [-5, 5])  // Vertical tilt
+  const rotateY = useTransform(mouseX, [0, 1], [5, -5])  // Horizontal tilt
   
-  // Optimize mouse move handler
+  // Optimized mouse move handler using requestAnimationFrame
   const handleMouseMove = useCallback((e: React.PointerEvent) => {
     const bounds = e.currentTarget.getBoundingClientRect()
     
     requestAnimationFrame(() => {
+      // Convert mouse position to normalized values (0 to 1)
       mouseX.set((e.clientX - bounds.left) / bounds.width)
       mouseY.set((e.clientY - bounds.top) / bounds.height)
+      // Update actual cursor position
       cursorX.set(e.clientX)
       cursorY.set(e.clientY)
     })
   }, [mouseX, mouseY, cursorX, cursorY])
 
+  // Handlers for interactive cursor effects
   const handleNameHover = useCallback(() => {
-    requestAnimationFrame(() => cursorSize.set(200))
+    requestAnimationFrame(() => cursorSize.set(250))  // Expand cursor on name hover
   }, [cursorSize])
 
   const handleNameLeave = useCallback(() => {
-    requestAnimationFrame(() => cursorSize.set(40))
+    requestAnimationFrame(() => cursorSize.set(30))   // Shrink cursor when leaving name
   }, [cursorSize])
 
   const handleSectionLeave = useCallback(() => {
@@ -54,12 +57,12 @@ export function HeroSection() {
 
   const handleSectionEnter = useCallback(() => {
     requestAnimationFrame(() => {
-      document.body.style.cursor = 'none'
-      cursorSize.set(40)
+      document.body.style.cursor = 'none'  // Hide default cursor
+      cursorSize.set(30)                   // Set initial custom cursor size
     })
   }, [cursorSize])
 
-  // Memoize animation variants
+  // Animation variants for custom cursor
   const cursorVariants = useMemo(() => ({
     hidden: { opacity: 0, scale: 0.8 },
     visible: { 
@@ -74,7 +77,7 @@ export function HeroSection() {
     }
   }), [])
 
-  // Create a more dynamic glow effect that follows the mouse
+  // Dynamic glow effect that follows mouse movement
   const glowBackground = useMotionTemplate`
     radial-gradient(
       circle at ${cursorX}px ${cursorY}px,
@@ -92,6 +95,7 @@ export function HeroSection() {
       onPointerEnter={handleSectionEnter}
       onPointerLeave={handleSectionLeave}
     >
+      {/* Custom cursor element */}
       <motion.div
         className="fixed w-4 h-4 pointer-events-none mix-blend-difference"
         variants={cursorVariants}
@@ -112,7 +116,7 @@ export function HeroSection() {
         }}
       />
 
-      {/* Dynamic Grid Backdrop */}
+      {/* Animated grid background */}
       <motion.div 
         className="absolute inset-0 opacity-10 dark:opacity-20"
         style={{
@@ -130,13 +134,13 @@ export function HeroSection() {
         }}
       />
 
-      {/* Glow Effect Layer */}
+      {/* Mouse-following glow effect */}
       <motion.div 
         className="absolute inset-0 pointer-events-none"
         style={{ background: glowBackground }}
       />
 
-      {/* Floating Text Container with even more padding */}
+      {/* Main content container with 3D rotation */}
       <motion.div 
         className="relative z-10 text-center"
         style={{
@@ -145,9 +149,9 @@ export function HeroSection() {
           transformStyle: 'preserve-3d'
         }}
       >
-        {/* Name section with even larger hover area */}
+        {/* Animated name heading */}
         <motion.h1
-          className="text-6xl md:text-8xl font-bold tracking-tighter py-24 mb-0"
+          className="text-6xl md:text-8xl font-bold tracking-tighter py-32 mb-0 px-24"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -155,15 +159,16 @@ export function HeroSection() {
           onMouseLeave={handleNameLeave}
         >
           <span 
-            className="text-muted-foreground px-4 py-12 inline-block"
+            className="text-muted-foreground px-8 py-16 inline-block"
             onMouseEnter={handleNameHover}
             onMouseLeave={handleNameLeave}
           >
             Hello, I'm{" "}
           </span>
+          {/* Animated gradient name */}
           <motion.span
             className={`
-              relative inline-block px-4 py-12
+              relative inline-block px-8 py-16
               bg-gradient-to-r from-primary via-secondary to-primary
               dark:from-primary/90 dark:via-secondary/90 dark:to-primary/90
               bg-clip-text text-transparent
@@ -179,7 +184,6 @@ export function HeroSection() {
               repeat: Infinity,
             }}
             style={{
-              // Fallback color during theme transition
               color: theme === 'dark' ? 'hsl(var(--primary))' : 'hsl(var(--primary))',
             }}
             onMouseEnter={handleNameHover}
@@ -189,9 +193,9 @@ export function HeroSection() {
           </motion.span>
         </motion.h1>
 
-        {/* Container for subheading and button */}
-        <div className="-mt-20 relative">
-          {/* Dynamic Subheading */}
+        {/* Subheading and button container */}
+        <div className="-mt-28 relative">
+          {/* Animated subheading */}
           <motion.p
             className="text-xl md:text-2xl font-medium max-w-2xl mx-auto mb-6"
             initial={{ opacity: 0 }}
@@ -201,7 +205,7 @@ export function HeroSection() {
             A passionate developer crafting beautiful and functional web experiences.
           </motion.p>
 
-          {/* Animated Resume Button */}
+          {/* Animated resume button */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -216,7 +220,7 @@ export function HeroSection() {
         </div>
       </motion.div>
 
-      {/* Floating Grid Particles */}
+      {/* Floating background particles */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(20)].map((_, i) => (
           <motion.div

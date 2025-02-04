@@ -2,7 +2,8 @@ import { memo, useMemo } from 'react'
 import { motion } from "framer-motion"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 
-// Move static data outside component
+// Define gradient colors for profile image animation
+// Using 'as const' for type safety and immutability
 const profileGradientColors = [
   "#4B0082", // Indigo
   "#6A5ACD", // Slate blue
@@ -11,7 +12,8 @@ const profileGradientColors = [
   "#1E90FF", // Dodger blue
 ] as const
 
-// Memoize static content sections
+// TechnicalEvolution: Displays professional growth and technical expertise
+// Memoized to prevent unnecessary re-renders
 const TechnicalEvolution = memo(() => (
   <motion.div
     initial={{ opacity: 0, x: -20 }}
@@ -29,6 +31,8 @@ const TechnicalEvolution = memo(() => (
   </motion.div>
 ))
 
+// CoreCompetencies: Highlights key technical skills and expertise
+// Memoized for performance optimization
 const CoreCompetencies = memo(() => (
   <motion.div
     initial={{ opacity: 0, x: -20 }}
@@ -46,6 +50,8 @@ const CoreCompetencies = memo(() => (
   </motion.div>
 ))
 
+// SystemsThinking: Describes approach to system architecture and design
+// Memoized to optimize performance
 const SystemsThinking = memo(() => (
   <motion.div
     initial={{ opacity: 0, x: -20 }}
@@ -63,8 +69,10 @@ const SystemsThinking = memo(() => (
   </motion.div>
 ))
 
-// Optimize profile image with proper loading
+// ProfileImage: Animated profile image with gradient effects
+// Memoized for performance and animation optimization
 const ProfileImage = memo(() => {
+  // Memoize gradient animation to prevent recreation on each render
   const gradientAnimation = useMemo(() => ({
     background: profileGradientColors.map(color => 
       `linear-gradient(45deg, ${color} 0%, transparent 100%)`
@@ -79,6 +87,7 @@ const ProfileImage = memo(() => {
       transition={{ duration: 0.5 }}
       viewport={{ once: true }}
     >
+      {/* Animated gradient background effect */}
       <motion.div
         className="absolute inset-0 rounded-full"
         animate={gradientAnimation}
@@ -92,6 +101,7 @@ const ProfileImage = memo(() => {
           opacity: 0.7,
         }}
       />
+      {/* Profile image container with hover effect */}
       <motion.div
         className="absolute inset-0 rounded-full overflow-hidden border-4 border-background shadow-lg"
         whileHover={{ scale: 1.05 }}
@@ -111,8 +121,10 @@ const ProfileImage = memo(() => {
   )
 })
 
-// Main component with performance optimizations
+// Main AboutSection component
+// Implements section layout and animations
 function AboutSection() {
+  // Memoize title animation to prevent recreation
   const titleAnimation = useMemo(() => ({
     scale: [1, 1.02, 1]
   }), [])
@@ -120,6 +132,7 @@ function AboutSection() {
   return (
     <SectionWrapper id="about">
       <div className="container mx-auto px-6 relative">
+        {/* Animated section title */}
         <motion.h2 
           className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary text-center mb-16"
           animate={titleAnimation}
@@ -128,7 +141,9 @@ function AboutSection() {
           About Me
         </motion.h2>
 
+        {/* Main content grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+          {/* Left column: Technical content */}
           <motion.div className="space-y-8">
             <div className="space-y-8 text-muted-foreground">
               <TechnicalEvolution />
@@ -137,8 +152,10 @@ function AboutSection() {
             </div>
           </motion.div>
 
+          {/* Right column: Profile image and quote */}
           <div className="flex flex-col items-center gap-8">
             <ProfileImage />
+            {/* Animated quote */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -157,7 +174,7 @@ function AboutSection() {
   )
 }
 
-// Name components for better debugging
+// Add display names for React DevTools debugging
 TechnicalEvolution.displayName = 'TechnicalEvolution'
 CoreCompetencies.displayName = 'CoreCompetencies'
 SystemsThinking.displayName = 'SystemsThinking'

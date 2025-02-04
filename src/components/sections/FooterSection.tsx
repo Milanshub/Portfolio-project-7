@@ -2,7 +2,8 @@ import { memo, useMemo, useRef } from 'react'
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Github, Linkedin, X, Mail } from "lucide-react"
 
-// Move static data outside component
+// Define social media links configuration
+// Using 'as const' for type safety and immutability
 const socialLinks = [
   { 
     name: "GitHub", 
@@ -26,8 +27,10 @@ const socialLinks = [
   }
 ] as const
 
-// Memoize social links component
+// SocialLinks: Renders social media links with hover animations
+// Memoized to prevent unnecessary re-renders
 const SocialLinks = memo(() => {
+  // Memoize animation variants for consistent behavior
   const linkAnimation = useMemo(() => ({
     hover: { 
       scale: 1.1,
@@ -58,7 +61,8 @@ const SocialLinks = memo(() => {
   )
 })
 
-// Memoize copyright component
+// Copyright: Displays copyright information with fade-in animation
+// Memoized for performance optimization
 const Copyright = memo(() => (
   <motion.div
     className="text-sm text-muted-foreground text-center"
@@ -70,16 +74,19 @@ const Copyright = memo(() => (
   </motion.div>
 ))
 
+// Main FooterSection component
+// Implements scroll-based animations and layout
 function FooterSection() {
-  // Create ref for footer element
+  // Create ref for scroll-based animations
   const footerRef = useRef<HTMLElement>(null)
 
-  // Optimize scroll-based animations
+  // Set up scroll-based opacity animation
   const { scrollYProgress } = useScroll({
     target: footerRef,
-    offset: ["end end", "end start"]
+    offset: ["end end", "end start"]  // Animate between end of viewport and start of footer
   })
   
+  // Transform scroll progress into opacity value
   const opacity = useTransform(scrollYProgress, [0.8, 1], [0, 1])
 
   return (
@@ -101,7 +108,7 @@ function FooterSection() {
   )
 }
 
-// Add display names for debugging
+// Add display names for React DevTools debugging
 SocialLinks.displayName = 'SocialLinks'
 Copyright.displayName = 'Copyright'
 FooterSection.displayName = 'FooterSection'

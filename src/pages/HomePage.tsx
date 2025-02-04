@@ -5,7 +5,7 @@ import { MainContentBackground } from "@/components/layout/MainContentBackground
 
 // Lazy load less critical sections
 const AboutSection = lazy(() => import('@/components/sections/AboutSection'))
-const SkillsSection = lazy(() => import('@/components/sections/SkillsSections'))
+const SkillsSection = lazy(() => import('@/components/sections/SkillsSection'))
 const ProjectsSection = lazy(() => import('@/components/sections/ProjectSection'))
 const FooterSection = lazy(() => import('@/components/sections/FooterSection'))
 

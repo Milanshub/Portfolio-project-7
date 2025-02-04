@@ -13,18 +13,20 @@ import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { motion } from "framer-motion"
 import type { EmblaOptionsType } from 'embla-carousel'
 
-// Memoize section title
+// SectionTitle: Animated heading for the projects section
+// Memoized to prevent unnecessary re-renders
 const SectionTitle = memo(() => (
   <motion.h2 
     className="text-4xl md:text-5xl py-1 font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary dark:from-primary/90 dark:to-secondary/90 text-center mb-16"
-    animate={{ scale: [1, 1.02, 1] }}
+    animate={{ scale: [1, 1.02, 1] }}  // Subtle breathing animation
     transition={{ duration: 2, repeat: Infinity }}
   >
     Featured Projects
   </motion.h2>
 ))
 
-// Memoize carousel navigation buttons
+// CarouselNavigation: Navigation buttons for the carousel
+// Memoized for performance optimization
 const CarouselNavigation = memo(() => (
   <>
     <CarouselPrevious className="hidden md:flex dark:bg-background/80 dark:hover:bg-background/90 transition-colors duration-300" />
@@ -32,23 +34,24 @@ const CarouselNavigation = memo(() => (
   </>
 ))
 
+// Main ProjectsSection component
 function ProjectsSection() {
-  // Memoize autoplay options
+  // Memoize autoplay configuration to prevent recreation
   const autoplayOptions = useMemo(() => ({
-    delay: 3000,
-    stopOnInteraction: true,
-    stopOnMouseEnter: true,
+    delay: 3000,                // Time between slides
+    stopOnInteraction: true,    // Pause on user interaction
+    stopOnMouseEnter: true,     // Pause on hover
     rootNode: (emblaRoot: HTMLElement) => emblaRoot.parentElement as HTMLElement,
   }), [])
 
-  // Create plugin ref
+  // Create plugin ref for autoplay functionality
   const plugin = useRef(Autoplay(autoplayOptions))
 
-  // Memoize carousel options with correct type
+  // Memoize carousel options for consistent configuration
   const carouselOptions = useMemo((): EmblaOptionsType => ({
-    align: "start",
-    loop: true,
-    containScroll: "trimSnaps",
+    align: "start",            // Align slides to start
+    loop: true,               // Enable infinite loop
+    containScroll: "trimSnaps", // Prevent overscrolling
   }), [])
 
   return (
@@ -57,15 +60,17 @@ function ProjectsSection() {
         <SectionTitle />
 
         <div className="relative">
-          {/* Optional: Add a subtle gradient background for dark mode */}
+          {/* Background gradient effect for dark mode */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-transparent dark:from-primary/5 dark:via-background/30 dark:to-primary/5 rounded-xl blur-xl" />
           
+          {/* Carousel component with autoplay */}
           <Carousel
             opts={carouselOptions}
             className="w-full relative"
             plugins={[plugin.current]}
           >
             <CarouselContent className="-ml-2 md:-ml-4">
+              {/* Map through project data to create carousel items */}
               {projectData.map((project) => (
                 <CarouselItem 
                   key={project.id} 
@@ -77,6 +82,7 @@ function ProjectsSection() {
                 </CarouselItem>
               ))}
             </CarouselContent>
+            {/* Navigation buttons */}
             <CarouselNavigation />
           </Carousel>
         </div>
@@ -85,7 +91,7 @@ function ProjectsSection() {
   )
 }
 
-// Add display names
+// Add display names for React DevTools debugging
 SectionTitle.displayName = 'SectionTitle'
 CarouselNavigation.displayName = 'CarouselNavigation'
 

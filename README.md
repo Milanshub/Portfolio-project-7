@@ -1,50 +1,133 @@
-# React + TypeScript + Vite
+# Portfolio Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive portfolio website built with React, TypeScript, and Tailwind CSS. This project showcases a clean, performant, and accessible web application with features like dark mode support, smooth animations, and comprehensive testing.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Modern React with TypeScript for type safety
+- Vite for lightning-fast development and building
+- Tailwind CSS for responsive and customizable styling
+- Framer Motion for smooth animations
+- Dark mode support via next-themes
+- Carousel functionality with Embla Carousel
+- End-to-end testing with Cypress
+- Responsive navigation using Radix UI components
+- GitHub contributions visualization
+- Optimized image processing
 
-## Expanding the ESLint configuration
+## 🛠️ Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Node.js (Latest LTS version recommended)
+- npm or yarn package manager
 
-- Configure the top-level `parserOptions` property like this:
+## 🏗️ Installation
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. Clone the repository:
+```bash
+git clone https://github.com/Milanshub/Portfolio-project-7.git
+cd portfolio-project-7
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
 ```
+
+## 📜 Available Scripts
+
+- `npm run dev` - Start the development server
+- `npm run build` - Build the production-ready application
+- `npm run build-types` - Build TypeScript types
+- `npm run lint` - Run ESLint for code quality checks
+- `npm run preview` - Preview the production build locally
+- `npm run process-images` - Process and optimize images
+- `npm run cypress:open` - Open Cypress test runner
+- `npm run cypress:run` - Run Cypress tests in headless mode
+- `npm run test:e2e` - Run end-to-end tests with development server
+
+## 🏗️ Project Structure
+
+```
+portfolio-project-7/
+├── src/
+│   ├── components/
+│   │   ├── common/
+│   │   ├── layout/
+│   │   └── sections/
+│   ├── assets/
+│   └── ...
+├── cypress/
+│   ├── e2e/
+│   └── support/
+├── public/
+└── ...
+```
+
+## 🛠️ Tech Stack
+
+### Core
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+
+### UI Components & Styling
+- Radix UI
+- Framer Motion
+- Class Variance Authority
+- Tailwind Merge
+- Embla Carousel
+
+### Testing
+- Cypress
+- Testing Library
+
+### Development Tools
+- ESLint
+- TypeScript ESLint
+- Various Tailwind CSS plugins
+- Sharp for image optimization
+
+## 🧪 Testing
+
+The project uses Cypress for end-to-end testing. To run tests:
+
+1. Start the development server:
+```bash
+npm run dev
+```
+
+2. In a separate terminal, run Cypress tests:
+```bash
+npm run cypress:open # For interactive mode
+# or
+npm run cypress:run # For headless mode
+```
+
+## 📦 Building for Production
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist` directory.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 👥 Author
+
+Milan Shubaev 
+
+---
+
+Made with ❤️ using React, TypeScript, and Tailwind CSS

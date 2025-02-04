@@ -1,6 +1,6 @@
 import { memo } from "react"
 import { motion } from "framer-motion"
-import { GitHubContributions } from "@/components/common/GitHubContributions"
+import { Contributions } from "@/components/features/github/Contributions"
 import { 
   Blocks, 
   FileCode2, 
@@ -151,7 +151,7 @@ function SkillsSection() {
             viewport={{ once: true }}
             className="bg-background/50 rounded-lg p-8 shadow-lg"
           >
-            <GitHubContributions />
+            <Contributions />
           </motion.div>
         </div>
       </div>
