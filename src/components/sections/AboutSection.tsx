@@ -155,6 +155,29 @@ function AboutSection() {
           {/* Right column: Profile image and quote */}
           <div className="flex flex-col items-center gap-8">
             <ProfileImage />
+
+            {/* Resume Button */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-4"
+            >
+              <button 
+                onClick={() => {
+                  const link = document.createElement('a');
+                  link.href = '/assets/resume.pdf';
+                  link.download = 'Milan_Resume.pdf';
+                  link.target = '_blank';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="px-12 py-4 rounded-full bg-primary/10 hover:bg-primary/20 backdrop-blur-sm border border-primary/20 text-primary font-medium transition-all"
+              >
+                Resume
+              </button>
+            </motion.div>
+
             {/* Animated quote */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}

@@ -62,15 +62,7 @@ export function HeroSection() {
     })
   }, [cursorSize])
 
-  const handleResumeDownload = useCallback(() => {
-    const link = document.createElement('a');
-    link.href = '/assets/resume.pdf';
-    link.download = 'Milan_Resume.pdf';
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }, []);
+ 
 
   // Animation variants for custom cursor
   const cursorVariants = useMemo(() => ({
@@ -152,7 +144,7 @@ export function HeroSection() {
 
       {/* Main content container with 3D rotation */}
       <motion.div 
-        className="relative z-10 text-center"
+        className="relative z-10 text-center -mt-32"
         style={{
           rotateX,
           rotateY,
@@ -161,7 +153,7 @@ export function HeroSection() {
       >
         {/* Animated name heading */}
         <motion.h1
-          className="text-6xl md:text-8xl font-bold tracking-tighter py-16 mb-0"
+          className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tighter py-16 mb-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -207,7 +199,7 @@ export function HeroSection() {
         <div className="-mt-12 relative">
           {/* Animated subheading */}
           <motion.p
-            className="text-xl md:text-2xl font-medium max-w-2xl mx-auto mb-6"
+            className="text-xl md:text-2xl font-medium max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -215,19 +207,7 @@ export function HeroSection() {
             A passionate developer crafting beautiful and functional web experiences.
           </motion.p>
 
-          {/* Animated resume button */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-block p-8"
-          >
-            <button 
-              onClick={handleResumeDownload}
-              className="px-12 py-4 rounded-full bg-primary/10 hover:bg-primary/20 backdrop-blur-sm border border-primary/20 text-primary font-medium transition-all"
-            >
-              Resume
-            </button>
-          </motion.div>
+          
         </div>
       </motion.div>
 
