@@ -1,5 +1,5 @@
 export const measurePerformance = (componentName: string) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     const startTime = performance.now()
     
     return () => {

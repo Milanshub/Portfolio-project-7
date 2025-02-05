@@ -108,7 +108,7 @@ const ProfileImage = memo(() => {
         transition={{ duration: 0.3 }}
       >
         <img
-          src="/src/assets/images/profile.jpeg"
+          src="/assets/images/profile.jpeg"
           alt="Profile"
           width={320}
           height={320}

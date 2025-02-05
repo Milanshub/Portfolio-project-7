@@ -1,6 +1,6 @@
 import { useEffect, useState, memo } from "react";
 import { validateGithubEnv } from "@/lib/schemas/github.schema";
-import { ContributionsData, GithubApiError } from "@/lib/validations/github";
+import { ContributionsData, GithubApiError } from "@/types/github";
 import { logger } from "@/config/logger";
 
 // Type definitions for GitHub contribution data structure

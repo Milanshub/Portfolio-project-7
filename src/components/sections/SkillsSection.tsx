@@ -1,55 +1,8 @@
 import { memo } from "react"
 import { motion } from "framer-motion"
 import { Contributions } from "@/components/features/github/Contributions"
-import { 
-  Blocks, 
-  FileCode2, 
-  Server, 
-  Layers, 
-  Palette, 
-  Database 
-} from "lucide-react"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
-
-// Move static data outside component
-const skills = [
-  { 
-    name: "React", 
-    level: 90, 
-    color: "#61DAFB",
-    icon: <Blocks className="w-6 h-6" strokeWidth={1.5} /> 
-  },
-  { 
-    name: "TypeScript", 
-    level: 85, 
-    color: "#3178C6",
-    icon: <FileCode2 className="w-6 h-6" strokeWidth={1.5} /> 
-  },
-  { 
-    name: "Node.js", 
-    level: 85, 
-    color: "#339933",
-    icon: <Server className="w-6 h-6" strokeWidth={1.5} /> 
-  },
-  { 
-    name: "Docker", 
-    level: 80, 
-    color: "#FF4F64",
-    icon: <Layers className="w-6 h-6" strokeWidth={1.5} /> 
-  },
-  { 
-    name: "Tailwind CSS", 
-    level: 90, 
-    color: "#8B5CF6",
-    icon: <Palette className="w-6 h-6" strokeWidth={1.5} /> 
-  },
-  { 
-    name: "Supabase", 
-    level: 75, 
-    color: "#F59E0B",
-    icon: <Database className="w-6 h-6" strokeWidth={1.5} /> 
-  },
-] as const
+import { skillsData, type Skill } from "@/config/data/skillsData"
 
 // Memoize section title
 const SectionTitle = memo(() => (
@@ -92,7 +45,7 @@ const SkillProgressBar = memo(({ level, color, index }: {
 
 // Memoize skill card
 const SkillCard = memo(({ skill, index }: { 
-  skill: typeof skills[number]
+  skill: Skill
   index: number 
 }) => (
   <motion.div
@@ -128,7 +81,7 @@ const SkillsGrid = memo(() => (
   >
     <h3 className="text-3xl font-semibold mb-8 text-center">Technical Skills</h3>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {skills.map((skill, index) => (
+      {skillsData.map((skill, index) => (
         <SkillCard key={skill.name} skill={skill} index={index} />
       ))}
     </div>

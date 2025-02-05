@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { throttle } from 'lodash' 
+import throttle from 'lodash/throttle' 
 import { 
   Home,
   User,

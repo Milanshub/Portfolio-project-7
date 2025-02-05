@@ -62,6 +62,16 @@ export function HeroSection() {
     })
   }, [cursorSize])
 
+  const handleResumeDownload = useCallback(() => {
+    const link = document.createElement('a');
+    link.href = '/assets/resume.pdf';
+    link.download = 'Milan_Resume.pdf';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, []);
+
   // Animation variants for custom cursor
   const cursorVariants = useMemo(() => ({
     hidden: { opacity: 0, scale: 0.8 },
@@ -151,7 +161,7 @@ export function HeroSection() {
       >
         {/* Animated name heading */}
         <motion.h1
-          className="text-6xl md:text-8xl font-bold tracking-tighter py-32 mb-0 px-24"
+          className="text-6xl md:text-8xl font-bold tracking-tighter py-16 mb-0"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -159,7 +169,7 @@ export function HeroSection() {
           onMouseLeave={handleNameLeave}
         >
           <span 
-            className="text-muted-foreground px-8 py-16 inline-block"
+            className="text-muted-foreground px-4 py-8 inline-block"
             onMouseEnter={handleNameHover}
             onMouseLeave={handleNameLeave}
           >
@@ -194,7 +204,7 @@ export function HeroSection() {
         </motion.h1>
 
         {/* Subheading and button container */}
-        <div className="-mt-28 relative">
+        <div className="-mt-12 relative">
           {/* Animated subheading */}
           <motion.p
             className="text-xl md:text-2xl font-medium max-w-2xl mx-auto mb-6"
@@ -212,6 +222,7 @@ export function HeroSection() {
             className="inline-block p-8"
           >
             <button 
+              onClick={handleResumeDownload}
               className="px-12 py-4 rounded-full bg-primary/10 hover:bg-primary/20 backdrop-blur-sm border border-primary/20 text-primary font-medium transition-all"
             >
               Resume
