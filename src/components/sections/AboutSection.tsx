@@ -156,11 +156,24 @@ function AboutSection() {
           <div className="flex flex-col items-center gap-8">
             <ProfileImage />
 
+            {/* Animated quote */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center max-w-md"
+            >
+              <p className="italic text-muted-foreground">
+                "Passionate about solving complex problems through clean architecture and robust systems. Let's engineer solutions that scale."
+              </p>
+            </motion.div>
+
             {/* Resume Button */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="mt-4"
+              className="inline-block"
             >
               <button 
                 onClick={() => {
@@ -176,19 +189,6 @@ function AboutSection() {
               >
                 Resume
               </button>
-            </motion.div>
-
-            {/* Animated quote */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center max-w-md"
-            >
-              <p className="italic text-muted-foreground">
-                "Passionate about solving complex problems through clean architecture and robust systems. Let's engineer solutions that scale."
-              </p>
             </motion.div>
           </div>
         </div>
